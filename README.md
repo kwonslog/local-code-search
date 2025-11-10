@@ -45,7 +45,7 @@
 
 > ngrok 을 따로 설치하는 이유는 MCP 서버를 디버깅 할때 필요하기 때문이다.
 
-# 실행 방법
+## 실행 방법
 
 | 명령                               | 설명                                   |
 | ---------------------------------- | -------------------------------------- |
@@ -53,10 +53,14 @@
 | `python run_server.py --mcp-only`  | MCP 서버만 실행 (ngrok 미실행)         |
 | `python run_server.py --port 9000` | MCP 서버를 9000번 포트에서 실행        |
 
+## 환경 변수
+
+.env 파일안에 정의 되어 있다.
+
 ## ngrok 상태 확인
 - http://localhost:4040/inspect/http
 
-# ChatGPT 커넥터 연결 과정
+## ChatGPT 커넥터 연결 과정
 
 - 연결 과정에서 발생하는 요청과 응답값을 확인해 본다.
 - ngrok 을 로컬 PC 에서 실행했다면 `http://localhost:4040/inspect/http` 화면을 통해 요청/응답값을 확인 할 수 있다.
@@ -73,6 +77,8 @@
     - Forwarding url : https://8dc6a2abce95.ngrok-free.app
     - 최종 MCP 서버 URL : https://8dc6a2abce95.ngrok-free.app/mcp
 - 모두 입력후 만들기 버튼을 누른다.
+
+아래 내용들은 만들기 버튼을 눌렀을때 MCP 서버로 요청하는 순서를 정리하였다.
 
 ## 최초 커넥터와 MCP 서버간 통신
 
