@@ -2,9 +2,7 @@ from config import logger, MAX_FILE_SIZE
 from utils.security import safe_join
 from utils.errors import FileTooLargeError
 from pathlib import Path
-from fastmcp import FastMCP
-
-mcp = FastMCP.get_instance()
+from server import mcp
 
 def read_text_file(full_path: Path) -> str:
     size = full_path.stat().st_size

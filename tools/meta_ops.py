@@ -1,10 +1,7 @@
 import os
-from pathlib import Path
-from fastmcp import FastMCP
 from config import logger
 from utils.security import safe_join
-
-mcp = FastMCP.get_instance()
+from server import mcp
 
 @mcp.tool()
 def get_metadata(path: str) -> dict:

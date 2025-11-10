@@ -1,11 +1,8 @@
 import re
-from pathlib import Path
-from fastmcp import FastMCP
 from config import logger, MAX_FILE_SIZE
 from utils.security import safe_join
 from utils.errors import FileTooLargeError
-
-mcp = FastMCP.get_instance()
+from server import mcp
 
 @mcp.tool()
 def analyze_imports(path: str) -> dict:

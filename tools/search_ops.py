@@ -1,10 +1,7 @@
 from config import logger, MAX_FILE_SIZE, BASE_DIR
 from utils.security import safe_join
 from utils.errors import FileTooLargeError
-from pathlib import Path
-from fastmcp import FastMCP
-
-mcp = FastMCP.get_instance()
+from server import mcp
 
 @mcp.tool()
 def search(query: str) -> dict:
