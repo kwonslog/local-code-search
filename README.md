@@ -32,7 +32,6 @@
    pip install -r requirements.txt
    ```
 
-<del>
 4. ngrok 설치
    - 로컬 PC 에서 MCP 서버를 실행하고 ngrok 를 이용하여 이 로컬 서버를 외부에서 접근 가능 하도록 한다.
    - 파일을 [다운로드](https://ngrok.com/download/windows?tab=download) 받는다.
@@ -43,9 +42,14 @@
      ngrok config add-authtoken `ngrok 에서 제공하는 토큰값`
      ```
    - 위 과정을 실행해도 ngrok 정상 실행이 되지 않는다면 python 가상환경(venv) 상태의 cmd 창에서 ngrok 명령을 실행해 보자.
-</del>
 
-4. ngrok 설치
+> ngrok 을 따로 설치하는 이유는 MCP 서버를 디버깅 할때 필요하기 때문이다.
+>
+> 
+
+
+
+5. ngrok 설치
    - pyngrok 을 사용하기 때문에 별도 설치는 필요 없다.
 
 # 실행 방법
@@ -79,6 +83,20 @@
 
 ## 최초 커넥터와 MCP 서버간 통신
 
+- 요청 endpoint 는 2가지를 사용한다.
+  - POST /mcp 
+  - GET /mcp
+
+- 요청 header 는 아래 필수값들을 추가해야 한다.
+   ```
+   Accept: application/json, text/event-stream
+   Content-Type: application/json
+   Mcp-Protocol-Version	2025-06-18
+   Mcp-Session-Id	ab00356446ac4005a39078c2b3cfa178
+   ```
+  - Mcp-Session-Id 값은 handshake 응답 헤더의 값을 사용해야 한다.
+  - Mcp-Protocol-Version 값은 handshake 응답 바디의 protocolVersion 값을 사용하면 된다.
+
 ### 최초 handshake 요청
 
 `커넥터 만들기`를 누르면 ngrok 을 통해 로컬 PC 의 MCP 서버로 요청이 발생한다.
@@ -86,14 +104,6 @@
 - 요청 endpoint
    ```
    POST /mcp
-   ```
-
-- 요청 header
-   ```
-   요청 시 아래 값들이 헤더에 포함되어야 한다.
-
-   Accept: application/json, text/event-stream
-   Content-Type: application/json
    ```
 
 - 요청 body
@@ -189,14 +199,6 @@
    GET /mcp
    ```
 
-- 요청 header
-   ```
-   Accept: application/json, text/event-stream
-   Content-Type: application/json
-   Mcp-Protocol-Version	2025-06-18
-   Mcp-Session-Id	ab00356446ac4005a39078c2b3cfa178
-   ```
-
 - 응답 body
    ```
    :ping - 2025-11-10 06:29:50.979235+00:00
@@ -218,14 +220,6 @@
    POST /mcp
    ```
 
-- 요청 header
-   ```
-   Accept: application/json, text/event-stream
-   Content-Type: application/json
-   Mcp-Protocol-Version	2025-06-18
-   Mcp-Session-Id	ab00356446ac4005a39078c2b3cfa178
-   ```
-   
 - 요청 body
    ```json
    {
@@ -240,5 +234,314 @@
 
 이제 클라이언트(커넥터)는 MCP 서버가 제공하는 기능들이 무엇인지 조회 한다.
 
+- 요청 endpoint
+   ```
+   POST /mcp
+   ```
 
-###
+- 요청 body
+   ```json
+   {
+      "method": "tools/list",
+      "jsonrpc": "2.0",
+      "id": 1
+   }
+   ```
+
+- 응답 body
+   ```json
+   {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+         "tools": [
+               {
+                  "name": "read_file",
+                  "inputSchema": {
+                     "properties": {
+                           "path": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "path"
+                     ],
+                     "type": "object"
+                  },
+                  "outputSchema": {
+                     "properties": {
+                           "result": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "result"
+                     ],
+                     "type": "object",
+                     "x-fastmcp-wrap-result": true
+                  },
+                  "_meta": {
+                     "_fastmcp": {
+                           "tags": []
+                     }
+                  }
+               },
+               {
+                  "name": "write_file",
+                  "inputSchema": {
+                     "properties": {
+                           "path": {
+                              "type": "string"
+                           },
+                           "content": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "path",
+                           "content"
+                     ],
+                     "type": "object"
+                  },
+                  "outputSchema": {
+                     "properties": {
+                           "result": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "result"
+                     ],
+                     "type": "object",
+                     "x-fastmcp-wrap-result": true
+                  },
+                  "_meta": {
+                     "_fastmcp": {
+                           "tags": []
+                     }
+                  }
+               },
+               {
+                  "name": "search",
+                  "description": "BASE_DIR 하위에서 query 문자열이 포함된 파일 검색.",
+                  "inputSchema": {
+                     "properties": {
+                           "query": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "query"
+                     ],
+                     "type": "object"
+                  },
+                  "outputSchema": {
+                     "additionalProperties": true,
+                     "type": "object"
+                  },
+                  "_meta": {
+                     "_fastmcp": {
+                           "tags": []
+                     }
+                  }
+               },
+               {
+                  "name": "fetch",
+                  "description": "id(상대 경로)를 이용해 파일 내용을 가져옴.",
+                  "inputSchema": {
+                     "properties": {
+                           "id": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "id"
+                     ],
+                     "type": "object"
+                  },
+                  "outputSchema": {
+                     "additionalProperties": true,
+                     "type": "object"
+                  },
+                  "_meta": {
+                     "_fastmcp": {
+                           "tags": []
+                     }
+                  }
+               },
+               {
+                  "name": "list_dir_tree",
+                  "description": "지정된 경로(path)의 디렉터리 트리를 JSON 형태로 반환.\n\nArgs:\n    path (str | None): 기준 디렉터리 경로. 지정되지 않으면 BASE_DIR 사용.\n    exclude (list[str] | None): 무시할 파일명/디렉터리명 패턴 리스트. 예: ['__pycache__', '*.pyc']\n\nReturns:\n    dict: 디렉터리 트리 구조.\n\nNotes:\n    - .gitignore 기반의 기본 제외 패턴 포함 (.vscode, .venv, __pycache__)\n    - 1분 단위 캐시 적용 (exclude 패턴 포함)\n    - 접근 불가 경로 및 제외된 경로는 트리에 포함되지 않음.",
+                  "inputSchema": {
+                     "properties": {
+                           "path": {
+                              "anyOf": [
+                                 {
+                                       "type": "string"
+                                 },
+                                 {
+                                       "type": "null"
+                                 }
+                              ],
+                              "default": null
+                           },
+                           "exclude": {
+                              "anyOf": [
+                                 {
+                                       "items": {
+                                          "type": "string"
+                                       },
+                                       "type": "array"
+                                 },
+                                 {
+                                       "type": "null"
+                                 }
+                              ],
+                              "default": null
+                           }
+                     },
+                     "type": "object"
+                  },
+                  "outputSchema": {
+                     "additionalProperties": true,
+                     "type": "object"
+                  },
+                  "_meta": {
+                     "_fastmcp": {
+                           "tags": []
+                     }
+                  }
+               },
+               {
+                  "name": "count_lines",
+                  "description": "코드 파일의 총 줄 수, 주석 수, 빈 줄 수를 계산.\n언어 무관하며 단순 패턴 기반.",
+                  "inputSchema": {
+                     "properties": {
+                           "path": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "path"
+                     ],
+                     "type": "object"
+                  },
+                  "outputSchema": {
+                     "additionalProperties": true,
+                     "type": "object"
+                  },
+                  "_meta": {
+                     "_fastmcp": {
+                           "tags": []
+                     }
+                  }
+               },
+               {
+                  "name": "get_metadata",
+                  "description": "파일의 메타데이터 반환.\n- 크기(size)\n- 생성일(ctime)\n- 수정일(mtime)\n- 접근권한(permission)",
+                  "inputSchema": {
+                     "properties": {
+                           "path": {
+                              "type": "string"
+                           }
+                     },
+                     "required": [
+                           "path"
+                     ],
+                     "type": "object"
+                  },
+                  "outputSchema": {
+                     "additionalProperties": true,
+                     "type": "object"
+                  },
+                  "_meta": {
+                     "_fastmcp": {
+                           "tags": []
+                     }
+                  }
+               }
+         ]
+      }
+   }
+   ```
+
+- 응답값 중에서 중요한 항목들을 보면
+  - name : 제공하는 기능의 이름
+  - description : 이 기능이 어떠한 일을 수행하는지에 대한 설명
+  - inputSchema : 기능 호출의 인자 타입
+  - outputSchema : 기능 응답값의 인자 타입
+
+- ChatGPT는 응답값을 벡터화 해서 저장을 하는데 name, description 을 정확하게 입력해 두면 도구를 더 똑똑하게 선택한다.  
+  (description 값이 없어도 name 값으로 유추하여 도구를 사용함.)
+
+### 도구 호출
+
+아래 기능은 디렉토리 목록을 요청하고 결과를 반환한다.
+
+- 요청 endpoint
+   ```
+   POST /mcp
+   ```
+
+- 요청 body
+   ```json
+   {
+      "jsonrpc": "2.0",
+      "id": 0,
+      "method": "tools/call",
+      "params": {
+         "name": "list_dir_tree",
+         "arguments": {}
+      }
+   }
+   ```
+
+- 응답 body
+   ```json
+   {
+      "jsonrpc": "2.0",
+      "id": 0,
+      "result": {
+         "content": [
+               {
+                  "type": "text",
+                  "text": "{\"type\":\"directory\",\"name\":\"tools\",\"children\":[{\"type\":\"file\",\"name\":\"analyze_ops.py\"},{\"type\":\"file\",\"name\":\"file_ops.py\"},{\"type\":\"file\",\"name\":\"meta_ops.py\"},{\"type\":\"file\",\"name\":\"search_ops.py\"},{\"type\":\"file\",\"name\":\"tree_ops.py\"}]}"
+               }
+         ],
+         "structuredContent": {
+               "type": "directory",
+               "name": "tools",
+               "children": [
+                  {
+                     "type": "file",
+                     "name": "analyze_ops.py"
+                  },
+                  {
+                     "type": "file",
+                     "name": "file_ops.py"
+                  },
+                  {
+                     "type": "file",
+                     "name": "meta_ops.py"
+                  },
+                  {
+                     "type": "file",
+                     "name": "search_ops.py"
+                  },
+                  {
+                     "type": "file",
+                     "name": "tree_ops.py"
+                  }
+               ]
+         },
+         "isError": false
+      }
+   }
+   ```
+   - structuredContent 항목은 FastMCP 프레임워크에서 자동으로 삽입하는 데이터이다.
+   - 삽입하는 이유는 편의성 제공이다.
+
+## 기타
+
+### ngrok 현재 사용량 확인 방법
+- https://dashboard.ngrok.com/usage 로그인 필요.
