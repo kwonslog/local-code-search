@@ -8,7 +8,7 @@ from mcp_instance import mcp
 
 
 # 기본적으로 제외할 경로 (gitignore 참고)
-DEFAULT_EXCLUDE = ['.git', '.vscode', 'venv', '__pycache__', '*.pyc']
+DEFAULT_EXCLUDE = ['.git', '.vscode', '.next', 'node_modules', 'venv', '__pycache__', '*.pyc']
 
 
 # 내부 재귀 함수: 디렉토리 트리 생성 (제외 규칙 적용)
