@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: 디버깅", // 실행 이름
+            "name": "Python: MCP 서버만 실행", // 실행 이름
             "type": "debugpy", // 디버거 타입
             "request": "launch", // 실행 방식 (launch: 새 프로세스 시작)
             "program": "${workspaceFolder}/run_server.py",
@@ -10,6 +10,14 @@
             "args": [
                 "--mcp-only"
             ],
+        },
+        {
+            "name": "Python: MCP + ngrok 실행", // 실행 이름
+            "type": "debugpy", // 디버거 타입
+            "request": "launch", // 실행 방식 (launch: 새 프로세스 시작)
+            "program": "${workspaceFolder}/run_server.py",
+            "console": "integratedTerminal", // 출력 터미널 (VSCode 내장 터미널)
+            "args": [],
         },
     ],
 }

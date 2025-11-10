@@ -56,6 +56,7 @@ def main():
             print("\n========================================")
             print("🚀 FastMCP Server with ngrok Running")
             print(f"🌍 Public URL: {url}/mcp")
+            print(f"📡 Local Inspect URL: http://localhost:4040")
             print("========================================\n")
         except Exception as e:
             logger.error(f"❌ Failed to start ngrok: {e}")
