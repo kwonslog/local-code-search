@@ -1,3 +1,4 @@
+import os
 from config import logger, BASE_DIR
 from utils.security import safe_join
 from pathlib import Path
@@ -6,9 +7,15 @@ from fnmatch import fnmatch
 import time
 from mcp_instance import mcp
 
-
-# 기본적으로 제외할 경로 (gitignore 참고)
-DEFAULT_EXCLUDE = ['.git', '.vscode', '.next', 'node_modules', 'venv', '__pycache__', '*.pyc']
+# 환경변수에서 DEFAULT_EXCLUDE 패턴 불러오기
+# 쉼표(,)로 구분된 문자열을 리스트로 변환
+# 예: DEFAULT_EXCLUDE=".git,.vscode,node_modules"
+DEFAULT_EXCLUDE = [
+    item.strip() for item in os.getenv(
+        "DEFAULT_EXCLUDE",
+        ".git,.vscode,.next,node_modules,venv,__pycache__"
+    ).split(",")
+]
 
 
 # 내부 재귀 함수: 디렉토리 트리 생성 (제외 규칙 적용)
