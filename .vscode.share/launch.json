@@ -2,15 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "go : Mcp 디버깅",
-            "type": "go",
-            "request": "launch",
-            "mode": "debug",
-            "program": "${workspaceFolder}/main.go",
-            "cwd": "${workspaceFolder}",
-            "args": [],
-            "env": {},
-            "showLog": true
-        }
-    ]
+            "name": "Python: 디버깅", // 실행 이름
+            "type": "debugpy", // 디버거 타입
+            "request": "launch", // 실행 방식 (launch: 새 프로세스 시작)
+            "program": "${workspaceFolder}/run_server.py",
+            "console": "integratedTerminal", // 출력 터미널 (VSCode 내장 터미널)
+            "args": [
+                "--mcp-only"
+            ],
+        },
+    ],
 }
