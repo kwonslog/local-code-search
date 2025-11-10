@@ -5,7 +5,7 @@
 # 심볼릭 링크나 디렉토리 탈출(../ 등)을 이용한 보안 우회를 차단합니다.
 
 from pathlib import Path
-from config import BASE_DIR
+from config import get_base_dir
 
 
 class AccessDeniedError(Exception):
@@ -41,10 +41,10 @@ def safe_join(relative_path: str, must_exist: bool = False) -> Path:
     """
 
     # 전체 경로 계산 및 정규화 (resolve는 '..' 등 상대 경로를 해석함)
-    full_path = (BASE_DIR / relative_path).resolve()
+    full_path = (get_base_dir() / relative_path).resolve()
 
     # 1️⃣ BASE_DIR 외부 접근 방지
-    if not str(full_path).startswith(str(BASE_DIR)):
+    if not str(full_path).startswith(str(get_base_dir())):
         raise AccessDeniedError(f"Access denied: {relative_path}")
 
     # 2️⃣ 심볼릭 링크 접근 차단
