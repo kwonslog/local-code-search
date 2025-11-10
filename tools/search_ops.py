@@ -20,30 +20,3 @@ def search(query: str) -> dict:
             })
     logger.info(f"[search] {len(results)} results")
     return {"results": results}
-
-@mcp.tool()
-def fetch(id: str) -> dict:
-    """
-    id(상대 경로)를 이용해 파일 내용을 가져옴.
-    """
-    logger.info(f"[fetch] {id}")
-    full_path = safe_join(id, must_exist=True)
-
-    size = full_path.stat().st_size
-    if size > MAX_FILE_SIZE:
-        raise FileTooLargeError(id, size)
-
-    with open(full_path, "r", encoding="utf-8") as f:
-        text = f.read()
-
-    stat = full_path.stat()
-    return {
-        "id": id,
-        "title": full_path.name,
-        "text": text,
-        "url": f"file://{full_path}",
-        "metadata": {
-            "size": stat.st_size,
-            "modified": stat.st_mtime
-        }
-    }
