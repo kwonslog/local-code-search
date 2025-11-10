@@ -1,5 +1,5 @@
 import os
-from config import logger, BASE_DIR
+from config import logger, get_base_dir
 from utils.security import safe_join
 from pathlib import Path
 from functools import lru_cache
@@ -74,7 +74,7 @@ def list_dir_tree(path: str | None = None, exclude: list[str] | None = None) -> 
         - 1분 단위 캐시 적용 (exclude 패턴 포함)
         - 접근 불가 경로 및 제외된 경로는 트리에 포함되지 않음.
     """
-    target_path = path or str(BASE_DIR)
+    target_path = path or str(get_base_dir())
     logger.info(f"[list_dir_tree] target={target_path}")
 
     # 사용자 정의 제외 리스트와 기본 제외 리스트 결합
