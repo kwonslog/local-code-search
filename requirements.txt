@@ -1,0 +1,14 @@
+# === FastMCP 기반 로컬 서버 필수 패키지 ===
+fastmcp>=0.1.0
+
+# === HTTP 통신 및 ngrok API 요청 ===
+requests>=2.31.0
+
+# === 환경 변수 관리 (.env 지원) ===
+python-dotenv>=1.0.1
+
+# === 테스트 프레임워크 ===
+pytest>=8.0.0
+
+# === ngrok 연동 (선택: CLI 미설치 시 필요) ===
+pyngrok>=7.1.0
