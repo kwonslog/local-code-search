@@ -1,6 +1,6 @@
 <!-- 출처 : https://github.com/jlowin/fastmcp?tab=readme-ov-file -->
 
-# FastMCP 2.0: 표준 프레임워크
+# FastMCP 2.0: 표준 프레임워크(번역본)
 
 FastMCP는 Python 기반 MCP 개발을 개척했으며, FastMCP 1.0은 2024년에 공식 MCP SDK에 통합되었다.
 
