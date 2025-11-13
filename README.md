@@ -3,6 +3,11 @@
 이 프로젝트는 ChatGPT(PC 웹 버전)를 사용하여 코드를 작성하거나 분석 및 개선 작업을 할때
 로컬에 있는 소스 코드 정보를 제공하기 위한 목적으로 만들어 졌다.
 
+FastMCP 프레임워크를 사용하여 목록 조회와 파일 내용을 읽어 오는 수준의 단순한 기능을 가지고 있으며,
+ChatGTP 커넥터와 MCP 서버 간의 sse 통신 과정에서 발생한 endpoint, 요청/응답에 대한 내용이 포함되어 있다.
+
+소스 코드 정보 제공을 위한 더 효과적인 MCP 서버를 이용한 경험담은 [이곳]()을 참고
+
 ## 구현방법
 
 [FastMCP](https://github.com/jlowin/fastmcp) 프레임워크를 사용한다.
@@ -15,7 +20,6 @@
 
 1. 폴더 생성
    - `local-code-search` 폴더를 생성하고, `git init` 명령을 실행하여 소스 코드를 관리 할 수 있도록 초기 설정을 한다.
-   - 현재 이 프로젝트 코드는 git 으로 관리되고 있으며 로컬 PC 로 다운받는 방법은 `git clone https://github.com/kwonslog/local-code-search.git` 이다.
 
 2. python 가상환경(venv) 생성 및 활성화
    ```bash
@@ -55,7 +59,8 @@
 
 ## 환경 변수
 
-.env 파일안에 정의 되어 있다.
+.env 파일에 정의 되어 있다.
+> .env 파일이 없다면 .env_example 을 참고하여 .env 파일 작성 필요.
 
 ## ngrok 상태 확인
 - http://localhost:4040/inspect/http
